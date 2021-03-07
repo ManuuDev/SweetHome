@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+body {
+  margin: 0;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.message {
+  position: relative;
+  margin-left: 1.0px;
+  margin-top: 1.0px;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.name-left {
+  float: left;
+  color: #999;
+}
+
+</style>
+</head>
+<body>
+
+<div id="chat">
+    <div class="container">
+        <p class="message">Un mensaje de prueba para ver como se visualiza en la aplicacion</p>
+        <span class="name-left">Nombre</span>
+        <span class="time-right">11:00</span>
+    </div>
+</div>
+
+<template id="container-light">
+    <div id="mainDiv" class="container">
+        <p id="text" class ="message"></p>
+        <span id="name" class="name-left"></span>
+        <span id="hour" class="time-right"></span>
+    </div>
+</template>
+
+<script>
+    function addMessage(message){
+          var clone = document.getElementById("container-light").content.cloneNode(true);
+          clone.getElementById("text").innerText = message.text;
+          clone.getElementById("name").innerText = message.name;
+          clone.getElementById("hour").innerText = message.hour;
+          var chat = document.getElementById("chat");
+          chat.appendChild(clone);
+          window.scrollTo(0,document.body.scrollHeight);
+    }
+
+    function clearChatHistory() {
+        const chat = document.getElementById("chat");
+        chat.textContent = '';
+    }
+
+    function loadMessageHistory(messages) {
+        clearChatHistory();
+
+        for (i=0; i < messages.length; i++) {
+            addMessage(messages[i]);
+        }
+    }
+</script>
+
+</body>
+</html>
