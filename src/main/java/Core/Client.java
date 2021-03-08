@@ -5,7 +5,6 @@ import Crypto.Crypto;
 import Structures.*;
 import SysInfo.Log;
 import SysInfo.Nivel;
-import javafx.application.Platform;
 
 import javax.crypto.SecretKey;
 import java.io.*;

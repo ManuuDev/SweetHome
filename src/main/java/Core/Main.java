@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import static Core.Tools.createDialog;
 
 public class Main extends Application {
-    //TODO 1) Pasar a una lista de elementos en js como el bookmark guardado.
-    //TODO 2) Eliminar chequeo ipv4 null.
-    //TODO 3) Si la ipv4 no se puede obtener, se debe enviar un mensaje de informacion y no iniciar el programa.
-    //TODO 4) Barra de progreso para el envio de archivos.
+    //TODO 1) Eliminar chequeo ipv4 null.
+    //TODO 2) Si la ipv4 no se puede obtener, se debe enviar un mensaje de informacion y no iniciar el programa.
+    //TODO 3) Barra de progreso para el envio de archivos.
 
     //TODO Branch 1) Cada contacto debe tener un html asociado que funcionara como almacenamiento.
 
     //TODO Exception handler con custom exceptions
+    //TODO Mostrar scrollbar siempre en ul
 
     /*TODO
        Si ocurre un error, por ejemplo puerto en uso,

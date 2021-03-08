@@ -2,7 +2,6 @@ package SysInfo;
 
 import Core.Main;
 import Core.Tools;
-import javafx.application.Platform;
 
 import static Core.Tools.runTaskInUIThread;
 

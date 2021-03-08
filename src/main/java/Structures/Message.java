@@ -11,33 +11,34 @@ public class Message implements Serializable {
     private String hour;
     @JsonbProperty("text")
     private String text;
+    @JsonbProperty("local")
+    private boolean local;
 
     @JsonbTransient
     private String receiverIp;
-    @JsonbTransient
-    private boolean localMessage;
 
     public Message(String senderName, String receiverIp, String hour, String text) {
         this.senderName = senderName;
         this.receiverIp = receiverIp;
         this.hour = hour;
         this.text = text;
+        this.local = Boolean.FALSE;
     }
 
-    public Message(String senderName, String receiverIp, String hour, String text, boolean localMessage) {
+    public Message(String senderName, String receiverIp, String hour, String text, boolean local) {
         this.senderName = senderName;
         this.receiverIp = receiverIp;
         this.hour = hour;
         this.text = text;
-        this.localMessage = localMessage;
+        this.local = local;
     }
 
-    public boolean isLocalMessage() {
-        return localMessage;
+    public boolean isLocal() {
+        return local;
     }
 
-    public void setLocalMessage(boolean localMessage) {
-        this.localMessage = localMessage;
+    public void setLocal(boolean local) {
+        this.local = local;
     }
 
     public String getSenderName() {
