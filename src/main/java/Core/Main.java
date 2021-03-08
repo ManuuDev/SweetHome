@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import static Core.Tools.createDialog;
 
 public class Main extends Application {
+    //TODO Descargar jQuery y Bootstrap en local, crear archivo para script y css del chat.
     //TODO 1) Eliminar chequeo ipv4 null.
     //TODO 2) Si la ipv4 no se puede obtener, se debe enviar un mensaje de informacion y no iniciar el programa.
     //TODO 3) Barra de progreso para el envio de archivos.
