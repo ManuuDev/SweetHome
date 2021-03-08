@@ -1,4 +1,5 @@
 # Build and output folders
+.idea/
 target/
 out/
 jre/
