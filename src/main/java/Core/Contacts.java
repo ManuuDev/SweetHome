@@ -3,11 +3,9 @@ package Core;
 import Structures.Contact;
 import SysInfo.Log;
 import SysInfo.Nivel;
-import javafx.application.Platform;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 import static Core.Tools.runTaskInUIThread;
 

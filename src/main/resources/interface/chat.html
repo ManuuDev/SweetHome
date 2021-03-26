@@ -2,82 +2,92 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <style>
-body {
-  margin: 0;
-  max-width: 600px;
-  padding: 0 20px;
-}
 
-.container {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
-}
+        body {
+          margin: 0;
+          max-width: 100%;
+          max-height: 100%;
+          overflow-y: hidden;
+        }
 
-.darker {
-  border-color: #ccc;
-  background-color: #ddd;
-}
+        .message {
+          margin: 6px 0;
+          text-align: left;
+          font-weight: bold;
+        }
 
-.container::after {
-  content: "";
-  clear: both;
-  display: table;
-}
+        .hour {
+          margin: 6px 0;
+          text-align: right;
+          color: #2E6D88;
+          font-style: italic;
+        }
 
-.message {
-  position: relative;
-  margin-left: 1.0px;
-  margin-top: 1.0px;
-}
+        ul.messages.list-group {
+          height: 580px;
+          overflow-y: scroll;
+        }
 
-.time-right {
-  float: right;
-  color: #aaa;
-}
+        .local {
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: 0;
+            width: 500px;
+            background-color: #DCF8C6;
+        }
 
-.name-left {
-  float: left;
-  color: #999;
-}
-
-</style>
+        .remote {
+            margin-top: 20px;
+            margin-left: 3px;
+            margin-right: auto;
+            width: 500px;
+            background-color: #ffffff;
+        }
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div id="chat">
-    <div class="container">
-        <p class="message">Un mensaje de prueba para ver como se visualiza en la aplicacion</p>
-        <span class="name-left">Nombre</span>
-        <span class="time-right">11:00</span>
-    </div>
+    <ul id="messageList" class="messages list-group">
+        <li class="remote list-group-item"><p class="message">mensaje</p> <p class="hour">7:00 p.m</p></li>
+        <li class="local list-group-item"><p class="message">mensaje</p> <p class="hour">7:00 p.m</p></li>
+    </ul>
 </div>
 
-<template id="container-light">
-    <div id="mainDiv" class="container">
-        <p id="text" class ="message"></p>
-        <span id="name" class="name-left"></span>
-        <span id="hour" class="time-right"></span>
-    </div>
+<template id="messageBox">
+    <li id="messageElement" class="list-group-item"><p id="text" class="message"></p> <p id="hour" class="hour"></p></li>
 </template>
 
 <script>
+    var chat = document.getElementById("messageList");
+
     function addMessage(message){
-          var clone = document.getElementById("container-light").content.cloneNode(true);
-          clone.getElementById("text").innerText = message.text;
-          clone.getElementById("name").innerText = message.name;
-          clone.getElementById("hour").innerText = message.hour;
-          var chat = document.getElementById("chat");
-          chat.appendChild(clone);
-          window.scrollTo(0,document.body.scrollHeight);
+        var clone = document.getElementById("messageBox").content.cloneNode(true);
+        var cssClass;
+
+        if(message.local) {
+            cssClass = "local";
+        }
+        else {
+            cssClass = "remote";
+        }
+
+        clone.getElementById("messageElement").classList.add(cssClass);
+
+        clone.getElementById("text").innerText = message.text;
+        clone.getElementById("hour").innerText = message.hour;
+
+        chat.append(clone);
+
+        //window.scrollTo(0,document.body.scrollHeight);
+        $("#messageList").animate({scrollTop: $('#messageList').prop("scrollHeight")}, 1000);
     }
 
     function clearChatHistory() {
-        const chat = document.getElementById("chat");
-        chat.textContent = '';
+        $("#messageList").empty();
     }
 
     function loadMessageHistory(messages) {
@@ -88,6 +98,8 @@ body {
         }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </body>
 </html>

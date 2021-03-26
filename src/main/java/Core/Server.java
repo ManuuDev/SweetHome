@@ -7,7 +7,6 @@ import Crypto.Crypto;
 import Structures.*;
 import SysInfo.Log;
 import SysInfo.Nivel;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
