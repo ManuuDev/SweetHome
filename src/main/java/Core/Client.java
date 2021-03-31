@@ -3,8 +3,8 @@ package Core;
 import Constant.SysInfo;
 import Crypto.Crypto;
 import Structures.*;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 
 import javax.crypto.SecretKey;
 import java.io.*;
@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static Constant.Network.*;
@@ -49,7 +48,7 @@ public class Client {
         try {
             socket.close();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
 
         return null;
@@ -122,13 +121,13 @@ public class Client {
                 s.close();
 
             } else {//TODO Informar en chat
-                Log.addMessage("El usuario rechazo la solicutid.", Nivel.INFO);
+                Log.addMessage("El usuario rechazo la solicutid.", Level.INFO);
             }
 
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
@@ -185,7 +184,7 @@ public class Client {
         try {
             output.writeObject(fileData);
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 }

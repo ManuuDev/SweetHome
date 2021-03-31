@@ -2,6 +2,7 @@ package Constant;
 
 import Crypto.Crypto;
 import Structures.ContactData;
+import Structures.CustomException;
 
 import static Core.Tools.getDeviceName;
 import static Core.Tools.getSystemIPV4;
@@ -19,15 +20,12 @@ public class SysInfo {
         SEARCH_TIME = 20000;
     }
 
-    public static void generateInformation() {
-        
+    public static void generateInformation() throws CustomException.NoIPV4 {
         LOCAL_IP = getSystemIPV4();
-        
-        if (LOCAL_IP != null) {
-            DEVICE_NAME = getDeviceName();
 
-            LOCAL_CONTACT = new ContactData(LOCAL_IP, DEVICE_NAME, Crypto.getPublicKey());
-        }
+        DEVICE_NAME = getDeviceName();
+
+        LOCAL_CONTACT = new ContactData(LOCAL_IP, DEVICE_NAME, Crypto.getPublicKey());
     }
 
     public static String getIPV4() {

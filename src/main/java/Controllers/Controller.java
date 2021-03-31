@@ -5,8 +5,8 @@ import Core.Contacts;
 import Core.Main;
 import Structures.Contact;
 import Structures.Message;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -199,7 +199,7 @@ public class Controller {
             Desktop.getDesktop().open(getDownloadsFolder());
             Main.minimizeApp();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
     }
 

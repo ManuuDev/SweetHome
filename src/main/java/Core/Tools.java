@@ -2,10 +2,9 @@ package Core;
 
 import Constant.SysInfo;
 import Structures.Contact;
+import Structures.CustomException;
 import Structures.Message;
 import Structures.Unit;
-import SysInfo.Log;
-import SysInfo.Nivel;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,7 +41,7 @@ public class Tools {
         return ip.substring(1);
     }
 
-    public static String getSystemIPV4() {
+    public static String getSystemIPV4() throws CustomException.NoIPV4 {
 
         try {
             String ipAddress = null;
@@ -62,33 +60,25 @@ public class Tools {
                 }
             }
 
-            if (ipAddress == null) {
-                Log.addMessage("Error al obtener la ipv4 del sistema: El dispositivo debe estar conectado a una red.", Nivel.ERROR);
-            }
+            ipAddress = null;
+
+            if (ipAddress == null)
+                throw new CustomException.NoIPV4();
 
             return ipAddress;
-
-        } catch (SocketException ex) {
-            Log.addMessage("Error al obtener la ipv4 del sistema: " + ex.getMessage(), Nivel.CRITICO);
-            return null;
+        } catch (SocketException | CustomException.NoIPV4 ex) {
+            throw new CustomException.NoIPV4();
         }
     }
 
     public static List<String> getAllPossibleIPs() {
-
         List<String> ipList = new ArrayList<>();
-
         String ipv4;
-
         ipv4 = SysInfo.getIPV4();
 
-        if (ipv4 != null) {
-            final String ipIterator = ipv4.substring(0, ipv4.lastIndexOf(".") + 1);;
-            int[] numbers = IntStream.range(1, 255).toArray();
-            Arrays.stream(numbers).forEach(number -> ipList.add(String.format("%s%d", ipIterator, number)));
-        } else { //TODO Arreglar, no se deberia llegar aca si ipv4=null, hay otro todo relacionado
-            //System.out.println("No se puede obtener la ipv4.");
-        }
+        final String ipIterator = ipv4.substring(0, ipv4.lastIndexOf(".") + 1);;
+        int[] numbers = IntStream.range(1, 255).toArray();
+        Arrays.stream(numbers).forEach(number -> ipList.add(String.format("%s%d", ipIterator, number)));
 
         return ipList.stream().filter(x -> !x.equals(ipv4)).collect(Collectors.toList());
     }
@@ -143,7 +133,7 @@ public class Tools {
             if (!file.exists())
                 file.createNewFile();
         } catch (IOException ex) {
-            Logger.getLogger(Tools.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tools.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         return file;

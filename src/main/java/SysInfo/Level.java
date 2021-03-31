@@ -1,7 +1,7 @@
 package SysInfo;
 
-public enum Nivel {
+public enum Level {
     INFO,
     ERROR,
-    CRITICO
+    CRITIC
 }

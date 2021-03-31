@@ -5,8 +5,8 @@ import Controllers.FileReceptionController;
 import Core.ThreadManager.threadType;
 import Crypto.Crypto;
 import Structures.*;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +38,7 @@ public class Server extends Thread {
 
             serverSocket = new ServerSocket(SERVER_PORT);
 
-            Log.addMessage("[Receptor iniciado]", Nivel.INFO);
+            Log.addMessage("[Receptor iniciado]", Level.INFO);
 
             synchronized (ThreadManager.threadManager) {
                 ThreadManager.threadManager.notify();
@@ -61,14 +61,14 @@ public class Server extends Thread {
 
         } catch (IOException | ClassNotFoundException ex) {
 
-            Log.addMessage("Error en hilo servidor: " + ex.getMessage(), Nivel.ERROR);
+            Log.addMessage("Error en hilo servidor: " + ex.getMessage(), Level.ERROR);
 
             try {
                 if (serverSocket != null) {
                     serverSocket.close();
                 }
             } catch (IOException ex1) {
-                Log.addMessage("No se pudo cerrar el socket servidor: " + ex1.getMessage(), Nivel.ERROR);
+                Log.addMessage("No se pudo cerrar el socket servidor: " + ex1.getMessage(), Level.ERROR);
             }
 
             ThreadManager.reportException(threadType.SERVER);
@@ -84,7 +84,7 @@ class DeviceFinder extends Thread {
 
         List<String> ipList = Tools.getAllPossibleIPs();
 
-        Log.addMessage("[Buscador de dispositivos iniciado]", Nivel.INFO);
+        Log.addMessage("[Buscador de dispositivos iniciado]", Level.INFO);
 
         synchronized (ThreadManager.threadManager) {
             ThreadManager.threadManager.notify();
@@ -101,7 +101,7 @@ class DeviceFinder extends Thread {
             threadpool.shutdown();
             threadpool.awaitTermination(60, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
 
         try {
@@ -122,7 +122,7 @@ class MessageReceiver extends Thread {
         try {
 
             ServerSocket socketServer = new ServerSocket(MESSAGES_PORT);
-            Log.addMessage("[Receptor de mensajes iniciado]", Nivel.INFO);
+            Log.addMessage("[Receptor de mensajes iniciado]", Level.INFO);
 
             synchronized (ThreadManager.threadManager) {
                 ThreadManager.threadManager.notify();
@@ -149,12 +149,12 @@ class MessageReceiver extends Thread {
                         addMessageWithUIThread(newMessage, contact);
 
                     } else {
-                        Log.addMessage("Error: El paquete recibido como mensaje es erroneo o esta dañado.", Nivel.ERROR);
+                        Log.addMessage("Error: El paquete recibido como mensaje es erroneo o esta dañado.", Level.ERROR);
                     }
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
     }
 
@@ -187,7 +187,7 @@ class FileReceiver extends Thread {
             ServerSocket fileServerSocket = new ServerSocket(FILE_PORT);
             fileServerSocket.setReceiveBufferSize(FILE_BUFFER);
 
-            Log.addMessage("[Receptor de archivos iniciado]", Nivel.INFO);
+            Log.addMessage("[Receptor de archivos iniciado]", Level.INFO);
 
             synchronized (ThreadManager.threadManager) {
                 ThreadManager.threadManager.notify();
@@ -221,7 +221,7 @@ class FileReceiver extends Thread {
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.CRITICO);
+            Log.addMessage(ex.getMessage(), Level.CRITIC);
             ThreadManager.reportException(threadType.RDA);
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
@@ -277,7 +277,7 @@ class FileReceiver extends Thread {
                 FileInfo fileInfo = receiveFileData(ois);
 
                 if (fileInfo == null) {
-                    Log.addMessage("No se pudo recibir la informacion de los archivos", Nivel.INFO);
+                    Log.addMessage("No se pudo recibir la informacion de los archivos", Level.INFO);
                     return;
                 }
 
@@ -306,7 +306,7 @@ class FileReceiver extends Thread {
             ois.close();
             socket.close();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
     }
 
@@ -321,7 +321,7 @@ class FileReceiver extends Thread {
         try {
             return (FileInfo) input.readObject();
         } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
             return null;
         }
     }

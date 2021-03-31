@@ -7,22 +7,22 @@ import static Core.Tools.runTaskInUIThread;
 
 public class Log {
     
-    public static void addMessage(String mensaje, Nivel nivel) {
+    public static void addMessage(String message, Level level) {
 
-        String level;
+        String levelString;
         
-        switch (nivel) {
-            case INFO:  level = "[INFO]";
+        switch (level) {
+            case INFO:  levelString = "[INFO]";
                 break;
-            case ERROR: level = "[ERROR]";
+            case ERROR: levelString = "[ERROR]";
                 break;
-            case CRITICO: level = "[ERROR CRITICO]";
+            case CRITIC: levelString = "[ERROR CRITICO]";
                 break;
-            default: level = "";
+            default: levelString = "";
                 break;
         }
         
-        String log = String.format("%s [%s] || %s", level, Tools.getSystemTime(), mensaje);
+        String log = String.format("%s [%s] || %s", levelString, Tools.getSystemTime(), message);
         System.out.println(log);
         runTaskInUIThread(() -> Main.console.insertMessage(log));
     }

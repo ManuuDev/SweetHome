@@ -1,18 +1,17 @@
 package Crypto;
 
 import Structures.Contact;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static SysInfo.Nivel.ERROR;
+import static SysInfo.Level.ERROR;
 
 public class Crypto {
 
@@ -46,7 +45,7 @@ public class Crypto {
             return cipher.doFinal(encodedAES);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Crypto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         return null;
@@ -71,7 +70,7 @@ public class Crypto {
             keyGenerator.init(256);
             return keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Crypto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -102,7 +101,7 @@ public class Crypto {
         } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException
                 | BadPaddingException | IllegalBlockSizeException
                 | InvalidAlgorithmParameterException | NoSuchPaddingException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -129,7 +128,7 @@ public class Crypto {
 
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Log.addMessage(ex.getMessage(), Nivel.ERROR);
+            Log.addMessage(ex.getMessage(), Level.ERROR);
         }
         return null;
     }

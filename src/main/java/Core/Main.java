@@ -4,9 +4,10 @@ import Constant.Network;
 import Constant.SysInfo;
 import Controllers.Controller;
 import Crypto.Crypto;
+import Structures.CustomException;
 import SysInfo.Console;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,13 +23,8 @@ import static Core.Tools.createDialog;
 
 public class Main extends Application {
     //TODO Descargar jQuery y Bootstrap en local, crear archivo para script y css del chat.
-    //TODO 1) Eliminar chequeo ipv4 null.
-    //TODO 2) Si la ipv4 no se puede obtener, se debe enviar un mensaje de informacion y no iniciar el programa.
     //TODO 3) Barra de progreso para el envio de archivos.
 
-    //TODO Branch 1) Cada contacto debe tener un html asociado que funcionara como almacenamiento.
-
-    //TODO Exception handler con custom exceptions
     //TODO Mostrar scrollbar siempre en ul
 
     /*TODO
@@ -87,17 +83,15 @@ public class Main extends Application {
         }
     }
 
-    private void setInitialConfig() {
+    private void setInitialConfig() throws Exception {
 
         Crypto.init();
 
-        SysInfo.generateInformation();
-
-        if (SysInfo.getIPV4() == null) {
-            String message = "No se ha podido iniciar la aplicacion ya que no pudimos acceder a una red, porfavor compruebe su conexion de red local o antivirus";
-            //TODO Arreglar para que, si hay un error al obtener la ip, se logee esa excepcion generada
-            Log.addMessage(message, Nivel.INFO);
-            createDialog(message);
+        try {
+            SysInfo.generateInformation();
+        } catch (CustomException.NoIPV4 ex) {
+            Log.addMessage(ex.getMessage(), Level.INFO);
+            createDialog(ex.getUserInfoMessage());
             System.exit(0);
         }
     }

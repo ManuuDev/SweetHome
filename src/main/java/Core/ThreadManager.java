@@ -1,11 +1,10 @@
 package Core;
 
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class ThreadManager {
@@ -38,6 +37,7 @@ class ThreadManager {
         while (!threadsQueue.isEmpty()) {
 
             Thread nextThread = threadsQueue.poll();
+
             nextThread.start();
 
             try {
@@ -45,7 +45,7 @@ class ThreadManager {
                     wait();
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ThreadManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
         }
     }
@@ -56,22 +56,22 @@ class ThreadManager {
             case SERVER:
                 SERVER = new Server();
                 SERVER.start();
-                Log.addMessage("Servicio servidor reiniciado", Nivel.INFO);
+                Log.addMessage("Servicio servidor reiniciado", Level.INFO);
                 break;
             case RDM:
                 MESSAGE_RECEIVER = new MessageReceiver();
                 MESSAGE_RECEIVER.start();
-                Log.addMessage("Servicio receptor de mensajes reiniciado", Nivel.INFO);
+                Log.addMessage("Servicio receptor de mensajes reiniciado", Level.INFO);
                 break;
             case RDA:
                 FILE_RECEIVER = new FileReceiver();
                 FILE_RECEIVER.start();
-                Log.addMessage("Servicio receptor de archivos reiniciado", Nivel.INFO);
+                Log.addMessage("Servicio receptor de archivos reiniciado", Level.INFO);
                 break;
             case BDD:
                 DEVICE_FINDER = new DeviceFinder();
                 DEVICE_FINDER.start();
-                Log.addMessage("Servicio buscador de dispositivos reiniciado", Nivel.INFO);
+                Log.addMessage("Servicio buscador de dispositivos reiniciado", Level.INFO);
                 break;
         }
     }

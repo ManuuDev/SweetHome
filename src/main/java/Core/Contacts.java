@@ -1,8 +1,8 @@
 package Core;
 
 import Structures.Contact;
+import SysInfo.Level;
 import SysInfo.Log;
-import SysInfo.Nivel;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class Contacts {
             CONTACT_LIST.add(contact);
             updateContactList();
 
-            Log.addMessage("Contacto agregado: " + contact.getName(), Nivel.INFO);
+            Log.addMessage("Contacto agregado: " + contact.getName(), Level.INFO);
         }
     }
 
