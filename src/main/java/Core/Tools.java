@@ -59,9 +59,7 @@ public class Tools {
                     }
                 }
             }
-
-            ipAddress = null;
-
+            
             if (ipAddress == null)
                 throw new CustomException.NoIPV4();
 
