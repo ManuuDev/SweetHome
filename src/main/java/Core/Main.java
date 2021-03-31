@@ -85,7 +85,7 @@ public class Main extends Application {
         }
     }
 
-    private void setInitialConfig() throws Exception {
+    private void setInitialConfig() {
 
         Crypto.init();
 
