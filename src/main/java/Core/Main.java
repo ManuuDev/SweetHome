@@ -22,9 +22,10 @@ import java.util.ArrayList;
 import static Core.Tools.createDialog;
 
 public class Main extends Application {
-    //TODO Descargar jQuery y Bootstrap en local, crear archivo para script y css del chat.
-    //TODO 3) Barra de progreso para el envio de archivos.
 
+    //TODO Barra de progreso para el envio de archivos.
+
+    //TODO Descargar jQuery y Bootstrap en local, crear archivo para script y css del chat.
     //TODO Mostrar scrollbar siempre en ul
 
     /*TODO
@@ -33,6 +34,7 @@ public class Main extends Application {
        Pensar una buena solucion ya que sin esos servicios el programa no serviria por lo tanto hay que
        informar el error con lenguaje natural y dar la opcion re relanzar el programa.
     */
+
     public static FXMLLoader mainLoader;
     public static Console console;
 
