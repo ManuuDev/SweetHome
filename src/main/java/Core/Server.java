@@ -25,8 +25,6 @@ import static Constant.Network.*;
 import static Core.Contacts.*;
 import static Core.Tools.*;
 
-//TODO Clase abstracta ServerModule y objetos con singleton para c/modulo
-//TODO DeviceFinder usa codigo de la clase cliente, decidir donde poner todo junto
 public class Server extends Thread {
 
     @Override

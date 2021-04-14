@@ -22,7 +22,20 @@ import java.util.ArrayList;
 import static Core.Tools.createDialog;
 
 public class Main extends Application {
+    // Terminar para comenzar las pruebas
+    //
+    //TODO Descargar jQuery y Bootstrap en local
+    //TODO Crear archivo independiente para script y css del chat.
+    //TODO Mostrar scrollbar siempre en ul
+    //TODO Script para compilar en un paquete
+    //
 
+    //TODO Shared folders
+    //TODO Un WebView por contacto, para permitir barras de progreso p/archivo y p/usuario embebidas.
+    //TODO Barra de progreso para el envio de archivos.
+
+    //TODO Clase abstracta ServerModule y objetos con singleton para c/modulo
+    //TODO DeviceFinder usa codigo de la clase cliente, decidir donde poner todo junto
     /*
       TODO
        Si ocurre un error, por ejemplo puerto en uso,
@@ -30,15 +43,6 @@ public class Main extends Application {
        Pensar una buena solucion ya que sin esos servicios el programa no serviria por lo tanto hay que
        informar el error con lenguaje natural y dar la opcion re relanzar el programa.
     */
-
-    //TODO Shared folders
-
-    //TODO Un WebView por contacto, para permitir barras de progreso p/archivo y p/usuario embebidas.
-    //TODO Barra de progreso para el envio de archivos.
-
-    //TODO Descargar jQuery y Bootstrap en local, crear archivo para script y css del chat.
-    //TODO Mostrar scrollbar siempre en ul
-
 
     public static FXMLLoader mainLoader;
     public static Console console;
