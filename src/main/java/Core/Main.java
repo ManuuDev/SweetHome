@@ -23,17 +23,16 @@ import static Core.Tools.createDialog;
 
 public class Main extends Application {
     // Terminar para comenzar las pruebas
-    //
+    //TODO Clase abstracta ServerModule y objetos con singleton para c/modulo
+    //TODO DeviceFinder usa codigo de la clase cliente, decidir donde poner todo junto
     //TODO Mostrar scrollbar siempre en ul
     //TODO Script para compilar en un paquete
     //
 
-    //TODO Shared folders
     //TODO Un WebView por contacto, para permitir barras de progreso p/archivo y p/usuario embebidas.
     //TODO Barra de progreso para el envio de archivos.
+    //TODO Shared folders
 
-    //TODO Clase abstracta ServerModule y objetos con singleton para c/modulo
-    //TODO DeviceFinder usa codigo de la clase cliente, decidir donde poner todo junto
     /*
       TODO
        Si ocurre un error, por ejemplo puerto en uso,
