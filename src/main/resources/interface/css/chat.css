@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  overflow-y: hidden;
+}
+
+.message {
+  margin: 6px 0;
+  text-align: left;
+  font-weight: bold;
+}
+
+.hour {
+  margin: 6px 0;
+  text-align: right;
+  color: #2E6D88;
+  font-style: italic;
+}
+
+ul.messages.list-group {
+  height: 580px;
+  overflow-y: scroll;
+}
+
+.local {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: 0;
+    width: 500px;
+    background-color: #DCF8C6;
+}
+
+.remote {
+    margin-top: 20px;
+    margin-left: 3px;
+    margin-right: auto;
+    width: 500px;
+    background-color: #ffffff;
+}

@@ -24,8 +24,6 @@ import static Core.Tools.createDialog;
 public class Main extends Application {
     // Terminar para comenzar las pruebas
     //
-    //TODO Descargar jQuery y Bootstrap en local
-    //TODO Crear archivo independiente para script y css del chat.
     //TODO Mostrar scrollbar siempre en ul
     //TODO Script para compilar en un paquete
     //
