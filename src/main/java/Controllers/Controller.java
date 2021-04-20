@@ -31,6 +31,8 @@ import javax.json.bind.JsonbBuilder;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -195,12 +197,16 @@ public class Controller {
     }
 
     public void openDownloadsFolder() {
-        try {
-            Desktop.getDesktop().open(getDownloadsFolder());
-            Main.minimizeApp();
-        } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
-        }
+        Runnable runnable = () -> {
+            try {
+                Desktop.getDesktop().open(getDownloadsFolder());
+            } catch (IOException ex) {
+                Log.addMessage(ex.getMessage(), Level.ERROR);
+            }
+        };
+
+        executeTask(runnable);
+        Main.minimizeApp();
     }
 
     public void openConsole() { consoleStage.show(); }
