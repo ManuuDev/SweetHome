@@ -23,8 +23,6 @@ import static Core.Tools.createDialog;
 
 public class Main extends Application {
     // Terminar para comenzar las pruebas
-    //TODO Clase abstracta ServerModule y objetos con singleton para c/modulo
-    //TODO DeviceFinder usa codigo de la clase cliente, decidir donde poner todo junto
     //TODO Mostrar scrollbar siempre en ul
     //TODO Script para compilar en un paquete
     //
