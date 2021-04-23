@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.WebView?>
+<?import javafx.scene.web.*?>
+
 <AnchorPane fx:id="mainAnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Controller">
    <children>
       <Pane id="mainPane" fx:id="mainPane" prefHeight="640.0" prefWidth="960.0" stylesheets="@main.css">
@@ -14,7 +13,7 @@
             <AnchorPane fx:id="leftPanel" prefHeight="640.0" prefWidth="20.0" stylesheets="@main.css">
                <children>
                   <VBox alignment="CENTER" layoutY="461.0" prefHeight="179.0" prefWidth="40.0" spacing="10">
-      
+
                      <children>
                          <ImageView accessibleHelp="Enviar archivos a todos mis contactos" accessibleText="Enviar archivos a todos mis contactos" fitHeight="38.0" fitWidth="33.0" onMouseClicked="#sendFilesToAllContacts" pickOnBounds="true" preserveRatio="true">
                          <image>
@@ -31,7 +30,7 @@
                               <Image url="@../icons/console-icon.png" />
                            </image>
                         </ImageView>
-      
+
                          <ImageView accessibleText="Salir" fitHeight="38.0" fitWidth="33.0" onMouseClicked="#exitProgram" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/exit-icon.png" />
@@ -43,7 +42,7 @@
             </AnchorPane>
             <AnchorPane layoutX="45.0" prefHeight="640.0" prefWidth="930.0">
                <children>
-                  <SplitPane dividerPositions="0.24392935982339956" layoutX="-4.0" prefHeight="640.0" prefWidth="918.0" stylesheets="@main.css">
+                  <SplitPane dividerPositions="0.21506550218340612" layoutX="-4.0" prefHeight="640.0" prefWidth="918.0" stylesheets="@main.css">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="638.0" prefWidth="296.0">
                            <children>
@@ -52,19 +51,19 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="638.0" prefWidth="693.0">
                            <children>
-                              <WebView id="webView" fx:id="webView" layoutY="1.0" prefHeight="598.0" prefWidth="690.0" />
-                              <ImageView id="dragAndDropImage" fx:id="dragAndDropImage" fitHeight="598.0" fitWidth="696.0" layoutX="-5.0" layoutY="1.0" pickOnBounds="true">
+                              <WebView id="webView" fx:id="webView" layoutY="1.0" prefHeight="598.0" prefWidth="715.0" />
+                              <ImageView id="dragAndDropImage" fx:id="dragAndDropImage" fitHeight="598.0" fitWidth="721.0" layoutX="-5.0" layoutY="1.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../icons/drop-here.png" />
                                  </image></ImageView>
-                              <Pane layoutY="598.0" prefHeight="40.0" prefWidth="690.0" style="-fx-background-color: #ffffff;">
+                              <Pane layoutY="598.0" prefHeight="40.0" prefWidth="715.0" style="-fx-background-color: #ffffff;">
                                  <children>
-                                    <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="650.0" layoutY="4.0" onMouseClicked="#sendFiles" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="676.0" layoutY="4.0" onMouseClicked="#sendFiles" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../icons/clip-icon.png" />
                                        </image>
                                     </ImageView>
-                                    <TextField fx:id="input" layoutX="4.0" layoutY="4.0" onKeyPressed="#sendMessage" prefHeight="33.0" prefWidth="646.0" promptText="Escribe un mensaje" />
+                                    <TextField fx:id="input" layoutX="4.0" layoutY="4.0" onKeyPressed="#sendMessage" prefHeight="33.0" prefWidth="656.0" promptText="Escribe un mensaje" />
                                  </children>
                               </Pane>
                            </children>
