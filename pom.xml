@@ -94,12 +94,15 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.4</version>
+                <version>0.0.5</version>
                 <configuration>
                     <mainClass>org.shdevelopment.Core.Main</mainClass>
                     <jlinkImageName>SweetHome</jlinkImageName>
                     <jlinkZipName>SweetHomeZip</jlinkZipName>
                     <launcher>SweetHome</launcher>
+                    <compress>1</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
                 </configuration>
             </plugin>
         </plugins>
