@@ -3,6 +3,7 @@
 target/
 out/
 jre/
+*.iml
 
 # Compiled class file
 *.class
