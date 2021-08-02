@@ -1,13 +1,5 @@
 package org.shdevelopment.Controllers;
 
-import org.shdevelopment.Core.Client;
-import org.shdevelopment.Core.Contacts;
-import org.shdevelopment.Core.Main;
-import org.shdevelopment.Structures.Contact;
-import org.shdevelopment.Structures.Message;
-import org.shdevelopment.SysInfo.Level;
-import org.shdevelopment.SysInfo.Log;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -27,13 +19,20 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.shdevelopment.Core.Client;
+import org.shdevelopment.Core.Contacts;
+import org.shdevelopment.Core.Main;
+import org.shdevelopment.Structures.Contact;
+import org.shdevelopment.Structures.Message;
+import org.shdevelopment.SysInfo.Level;
+import org.shdevelopment.SysInfo.Log;
+
 import javax.json.bind.JsonbBuilder;
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.shdevelopment.Core.Tools.getDownloadsFolder;
 

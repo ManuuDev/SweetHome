@@ -16,30 +16,21 @@ import org.shdevelopment.SysInfo.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.SocketPermission;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static org.shdevelopment.Core.Tools.createDialog;
 
 public class Main extends Application {
-    // Terminar para comenzar las pruebas
+
+    //General
+    //TODO Testing
+    //TODO Script para compilar en una plataforma
+    //TODO Manejo de errores en el ThreadManager para puertos en uso
+
+    //UI
     //TODO Mostrar scrollbar siempre en ul
-    //TODO Script para compilar en un paquete
-    //
-
-    //TODO Un WebView por contacto, para permitir barras de progreso p/archivo y p/usuario embebidas.
-    //TODO Barra de progreso para el envio de archivos.
-    //TODO Shared folders
-
-    /*
-      TODO
-       Si ocurre un error, por ejemplo puerto en uso,
-       el objeto threadmanager corre en el hilo principal y bloquea el programa.
-       Pensar una buena solucion ya que sin esos servicios el programa no serviria por lo tanto hay que
-       informar el error con lenguaje natural y dar la opcion re relanzar el programa.
-    */
+    //TODO Estructura JS p/usuario
 
     public static FXMLLoader mainLoader;
     public static Console console;
