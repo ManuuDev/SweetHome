@@ -1,14 +1,10 @@
 package Test;
 
-import junit.framework.TestCase;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
 import org.shdevelopment.ContactManagement.StatelessContactBook;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.SysInfo.Log;
@@ -17,26 +13,23 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Log.class)
-public class StatelessContactBookTests extends TestCase {
+public class StatelessContactBookTests {
 
     StatelessContactBook contactBook = StatelessContactBook.getInstance();
 
-    //https://github.com/powermock/powermock/issues/969
+    private static MockedStatic<Log> mockedSettings;
 
-    @Before
-    public void before() throws Exception {
-        PowerMockito.mockStatic(Log.class);
-        PowerMockito.doNothing().when(Log.class, "addMessage", Mockito.any(String.class), Mockito.any());
+    @BeforeClass
+    public static void init(){
+        mockedSettings = mockStatic(Log.class);
+    }
 
-        initMocks(this);
+    @AfterClass
+    public static void close() {
+        mockedSettings.close();
     }
 
     @After

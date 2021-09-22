@@ -1,22 +1,34 @@
 package Test;
 
 import javafx.util.Pair;
-import junit.framework.TestCase;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.MockedStatic;
 import org.shdevelopment.Crypto.Crypto;
 import org.shdevelopment.Structures.Contact;
+import org.shdevelopment.Structures.CustomException;
+import org.shdevelopment.SysInfo.Log;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.*;
 
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mockStatic;
 
-public class CryptoTest extends TestCase {
+public class CryptoTest {
 
-    @Before
-    public void before() {
-        initMocks(this);
+    private static MockedStatic<Log> mockedSettings;
+
+    @BeforeClass
+    public static void init(){
+        mockedSettings = mockStatic(Log.class);
+    }
+
+    @AfterClass
+    public static void close() {
+        mockedSettings.close();
     }
 
     private Pair<PublicKey, PrivateKey> generateRSATestKeys() throws NoSuchAlgorithmException {
@@ -33,7 +45,8 @@ public class CryptoTest extends TestCase {
         return keyGenerator.generateKey();
     }
 
-    public void testDecryptMessage() throws NoSuchAlgorithmException {
+    @Test
+    public void testDecryptMessage() throws NoSuchAlgorithmException, CustomException.ErrorDecryptingMessage {
         String message = "A test message";
         Pair<PublicKey, PrivateKey> keypair = generateRSATestKeys();
         SecretKey key = generateSymmetricTestKey();
@@ -44,7 +57,8 @@ public class CryptoTest extends TestCase {
         String result = Crypto.decryptMessage(encryptedMessage, key);
         assertEquals(message, result);
     }
-    /*
+
+    @Test(expected = CustomException.ErrorDecryptingMessage.class)
     public void testBadKeyDecryptMessage() throws Exception {
         String message = "A test message";
         Pair<PublicKey, PrivateKey> keypair = generateRSATestKeys();
@@ -55,9 +69,7 @@ public class CryptoTest extends TestCase {
 
         byte[] encryptedMessage = Crypto.encryptMessage(message, contact);
 
-        String result = Crypto.decryptMessage(encryptedMessage, key2);
-        //TODO Manejo de errores
-        assertNull(result);
+        Crypto.decryptMessage(encryptedMessage, key2);
     }
-    */
+
 }

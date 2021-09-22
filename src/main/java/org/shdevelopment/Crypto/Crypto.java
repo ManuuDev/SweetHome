@@ -1,6 +1,7 @@
 package org.shdevelopment.Crypto;
 
 import org.shdevelopment.Structures.Contact;
+import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.SysInfo.Level;
 import org.shdevelopment.SysInfo.Log;
 
@@ -106,12 +107,12 @@ public class Crypto {
         return null;
     }
 
-    public static String decryptMessage(byte[] message, SecretKey key) {
+    public static String decryptMessage(byte[] message, SecretKey key) throws CustomException.ErrorDecryptingMessage {
         byte[] decryptedMessage = Crypto.decryptMessageWithAES(message, key);
         return new String(decryptedMessage);
     }
 
-    public static byte[] decryptMessageWithAES(byte[] encryptedArray, SecretKey key) {
+    public static byte[] decryptMessageWithAES(byte[] encryptedArray, SecretKey key) throws CustomException.ErrorDecryptingMessage {
         try {
             byte[] ivArray = new byte[IV_SIZE];
             System.arraycopy(encryptedArray, 0, ivArray, 0, IV_SIZE);
@@ -129,8 +130,8 @@ public class Crypto {
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException
                 | IllegalBlockSizeException | BadPaddingException ex) {
             Log.addMessage(ex.getMessage(), Level.ERROR);
+            throw new CustomException.ErrorDecryptingMessage();
         }
-        return null;
     }
 
     public static PublicKey getPublicKey() {

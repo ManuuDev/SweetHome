@@ -4,6 +4,7 @@ import org.shdevelopment.ContactManagement.ContactBookInterface;
 import org.shdevelopment.Core.SyntacticAnalyzer;
 import org.shdevelopment.Crypto.Crypto;
 import org.shdevelopment.Structures.Contact;
+import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.Structures.Message;
 import org.shdevelopment.Structures.MessagePackage;
 import org.shdevelopment.SysInfo.Level;
@@ -58,12 +59,12 @@ class MessageReceiver extends ServerComponent {
                     }
                 }
             }
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException | CustomException.ErrorDecryptingMessage ex) {
             Log.addMessage(ex.getMessage(), Level.ERROR);
         }
     }
 
-    public String unpackMessage(MessagePackage packet, Contact contact) {
+    private String unpackMessage(MessagePackage packet, Contact contact) throws CustomException.ErrorDecryptingMessage {
         String message = Crypto.decryptMessage(packet.getMessage(), contact.getAes());
 
         return SyntacticAnalyzer.executeAnalyzers(message);
