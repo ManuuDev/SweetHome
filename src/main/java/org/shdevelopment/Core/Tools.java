@@ -46,35 +46,35 @@ public class Tools {
     public static String getSystemIPV4() throws CustomException.NoIPV4 {
 
         try {
-            String ipAddress = null;
 
-            for (Enumeration enumeration = NetworkInterface.getNetworkInterfaces(); enumeration.hasMoreElements(); ) {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 
-                NetworkInterface networkInterface = (NetworkInterface) enumeration.nextElement();
+            while (networkInterfaces.hasMoreElements()) {
 
-                for (Enumeration enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
 
-                    InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+
+                while (addresses.hasMoreElements()) {
+
+                    InetAddress inetAddress = addresses.nextElement();
 
                     if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        ipAddress = inetAddress.getHostAddress();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
 
-            if (ipAddress == null)
-                throw new CustomException.NoIPV4();
+            throw new CustomException.NoIPV4();
 
-            return ipAddress;
         } catch (SocketException | CustomException.NoIPV4 ex) {
             throw new CustomException.NoIPV4();
         }
     }
 
-    public static List<String> getAllPossibleIPs() {
+    public static List<String> getIPsFromLANDevices() {
         List<String> ipList = new ArrayList<>();
-        String ipv4;
-        ipv4 = SysInfo.getIPV4();
+        String ipv4 = SysInfo.getIPV4();
 
         final String ipIterator = ipv4.substring(0, ipv4.lastIndexOf(".") + 1);
         int[] numbers = IntStream.range(1, 255).toArray();
@@ -96,7 +96,7 @@ public class Tools {
     }
 
     public static long totalSizeInBytes(List<File> files) {
-        return files.stream().mapToLong(x -> x.length()).sum();
+        return files.stream().mapToLong(File::length).sum();
     }
 
     public static double fileSize(File file, Unit unit) {
@@ -113,10 +113,6 @@ public class Tools {
             default:
                 return bytes;
         }
-    }
-
-    public static int kilobytesToMegabytes(int kb) {
-        return kb / 1024;
     }
 
     public static File getDownloadsFolder() {

@@ -20,7 +20,7 @@ class DeviceFinder extends ServerComponent {
     @Override
     public void run() {
 
-        List<String> ipList = Tools.getAllPossibleIPs();
+        List<String> ipList = Tools.getIPsFromLANDevices();
 
         notifyToComponentManager();
 
