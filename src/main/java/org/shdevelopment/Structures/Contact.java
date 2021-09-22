@@ -10,7 +10,7 @@ public class Contact extends ContactData {
 
     private SecretKey aes;
 
-    transient private List<Message> chatHistory = new ArrayList<>();
+    final transient private List<Message> chatHistory = new ArrayList<>();
 
     public Contact(String ip, String name, PublicKey publicKey) {
         super(ip, name, publicKey);
@@ -19,6 +19,7 @@ public class Contact extends ContactData {
     public Contact(ContactData contactData) {
         super(contactData.getIp(), contactData.getName(), contactData.getPublicKey());
     }
+
     public Contact(ContactData contactData, SecretKey aes) {
         super(contactData.getIp(), contactData.getName(), contactData.getPublicKey());
         this.aes = aes;

@@ -1,12 +1,12 @@
 package org.shdevelopment.Structures;
 
-public abstract class CustomException extends  Exception{
+public abstract class CustomException extends Exception {
 
     public abstract String getUserInfoMessage();
 
     public static class NoIPV4 extends CustomException {
 
-        public NoIPV4(){
+        public NoIPV4() {
             super();
         }
 

@@ -8,6 +8,7 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 
 import static org.shdevelopment.SysInfo.Level.ERROR;
@@ -78,10 +79,10 @@ public class Crypto {
 
         try {
 
-            byte[] messageArray = message.getBytes("UTF8");
+            byte[] messageArray = message.getBytes(StandardCharsets.UTF_8);
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            
+
             byte[] ivRandom = new byte[IV_SIZE];
             SecureRandom random = new SecureRandom();
             random.nextBytes(ivRandom);
@@ -97,7 +98,7 @@ public class Crypto {
 
             return encryptedArray;
 
-        } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException
+        } catch (InvalidKeyException | NoSuchAlgorithmException
                 | BadPaddingException | IllegalBlockSizeException
                 | InvalidAlgorithmParameterException | NoSuchPaddingException ex) {
             Log.addMessage(ex.getMessage(), Level.ERROR);

@@ -8,8 +8,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.shdevelopment.Constant.Network;
 import org.shdevelopment.Constant.SysInfo;
+import org.shdevelopment.ContactManagement.StatelessContactBook;
 import org.shdevelopment.Controllers.Controller;
 import org.shdevelopment.Crypto.Crypto;
+import org.shdevelopment.Server.ComponentManager;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.SysInfo.Console;
 import org.shdevelopment.SysInfo.Level;
@@ -24,7 +26,7 @@ import static org.shdevelopment.Core.Tools.createDialog;
 public class Main extends Application {
 
     //General
-    //TODO Testing
+    //TODO Poder configurar stateless o stateful db
     //TODO Script para compilar en una plataforma
     //TODO Manejo de errores en el ThreadManager para puertos en uso
 
@@ -43,7 +45,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) throws Exception {
         mainStage = stage;
 
         createMainInterface();
@@ -53,14 +55,17 @@ public class Main extends Application {
         setInitialConfig();
         finishViewConfig(stage);
 
-        ThreadManager.threadManager.initThreads();
+        ComponentManager componentManager = new ComponentManager(StatelessContactBook.getInstance());
+        componentManager.initThreads();
     }
 
-    public static Controller getMainController(){
+    public static Controller getMainController() {
         return mainLoader.getController();
     }
 
-    public static void minimizeApp(){ mainStage.setIconified(true); }
+    public static void minimizeApp() {
+        mainStage.setIconified(true);
+    }
 
     private void createMainInterface() throws IOException {
         mainLoader = new FXMLLoader(Main.class.getResource("/fxml/main.fxml"));
@@ -94,7 +99,7 @@ public class Main extends Application {
         }
     }
 
-    private void finishViewConfig(Stage stage){
+    private void finishViewConfig(Stage stage) {
         Scene scene = new Scene(mainRoot, 960, 640);
         stage.setScene(scene);
         stage.setResizable(false);

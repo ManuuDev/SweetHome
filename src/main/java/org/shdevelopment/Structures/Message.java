@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
     @JsonbProperty("name")
-    private String senderName;
+    private final String senderName;
     @JsonbProperty("hour")
     private String hour;
     @JsonbProperty("text")
@@ -15,7 +15,7 @@ public class Message implements Serializable {
     private boolean local;
 
     @JsonbTransient
-    private String receiverIp;
+    private final String receiverIp;
 
     public Message(String senderName, String receiverIp, String hour, String text) {
         this.senderName = senderName;

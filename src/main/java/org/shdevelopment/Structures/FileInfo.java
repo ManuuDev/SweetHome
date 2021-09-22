@@ -6,12 +6,12 @@ public class FileInfo implements Serializable {
 
     private final String name;
     private final double size;
-    
-    public FileInfo(String name, double size){
+
+    public FileInfo(String name, double size) {
         this.name = name;
         this.size = size;
     }
-    
+
     public double getSize() {
         return size;
     }

@@ -15,23 +15,23 @@ public class FileReceptionController {
 
     @FXML
     @SuppressWarnings({"unchecked"})
-    protected void initialize(){
-        TableColumn<FileInfo,String> firstCol = new TableColumn<>("Nombre del archivo");
+    protected void initialize() {
+        TableColumn<FileInfo, String> firstCol = new TableColumn<>("Nombre del archivo");
         firstCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         firstCol.setPrefWidth(390);
-        TableColumn<FileInfo,String> secondCol = new TableColumn<>("Tamaño");
+        TableColumn<FileInfo, String> secondCol = new TableColumn<>("Tamaño");
         secondCol.setCellValueFactory(new PropertyValueFactory<>("size"));
         secondCol.setPrefWidth(200);
 
         metadataTable.getColumns().setAll(firstCol, secondCol);
     }
 
-    public TableView getTableView(){
+    public TableView getTableView() {
         return metadataTable;
     }
 
     public boolean getAnswer() {
-        return (boolean)  Platform.enterNestedEventLoop(loopKey);
+        return (boolean) Platform.enterNestedEventLoop(loopKey);
     }
 
     public void accept() {

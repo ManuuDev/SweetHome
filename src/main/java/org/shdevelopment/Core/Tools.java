@@ -3,6 +3,7 @@ package org.shdevelopment.Core;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import org.shdevelopment.Constant.SysInfo;
+import org.shdevelopment.ContactManagement.StatelessContactBook;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.Structures.Message;
@@ -47,11 +48,11 @@ public class Tools {
         try {
             String ipAddress = null;
 
-            for (Enumeration enumeration = NetworkInterface.getNetworkInterfaces(); enumeration.hasMoreElements();) {
+            for (Enumeration enumeration = NetworkInterface.getNetworkInterfaces(); enumeration.hasMoreElements(); ) {
 
                 NetworkInterface networkInterface = (NetworkInterface) enumeration.nextElement();
 
-                for (Enumeration enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
 
                     InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
 
@@ -75,24 +76,25 @@ public class Tools {
         String ipv4;
         ipv4 = SysInfo.getIPV4();
 
-        final String ipIterator = ipv4.substring(0, ipv4.lastIndexOf(".") + 1);;
+        final String ipIterator = ipv4.substring(0, ipv4.lastIndexOf(".") + 1);
         int[] numbers = IntStream.range(1, 255).toArray();
         Arrays.stream(numbers).forEach(number -> ipList.add(String.format("%s%d", ipIterator, number)));
 
         return ipList.stream().filter(x -> !x.equals(ipv4)).collect(Collectors.toList());
     }
 
-    public static void runTaskInUIThread(Runnable runnable){
+    public static void runTaskInUIThread(Runnable runnable) {
         Platform.runLater(runnable);
     }
 
-    public static void addMessageWithUIThread(Message message, String ip){
-        Platform.runLater(() -> Main.getMainController().addMessage(message,Contacts.findContact(ip)));
+    public static void addMessageWithUIThread(Message message, String ip) {
+        Platform.runLater(() -> Main.getMainController().addMessage(message, StatelessContactBook.getInstance().searchContact(ip)));
     }
-    public static void addMessageWithUIThread(Message message, Contact contact){
-        Platform.runLater(() -> Main.getMainController().addMessage(message,contact));
+
+    public static void addMessageWithUIThread(Message message, Contact contact) {
+        Platform.runLater(() -> Main.getMainController().addMessage(message, contact));
     }
-    
+
     public static long totalSizeInBytes(List<File> files) {
         return files.stream().mapToLong(x -> x.length()).sum();
     }
@@ -117,7 +119,9 @@ public class Tools {
         return kb / 1024;
     }
 
-    public static File getDownloadsFolder() { return new File(System.getProperty("user.home"), "Archivos de SweetHome"); }
+    public static File getDownloadsFolder() {
+        return new File(System.getProperty("user.home"), "Archivos de SweetHome");
+    }
 
     public static File createFile(String fileName) {
         String separator = System.getProperty("file.separator");

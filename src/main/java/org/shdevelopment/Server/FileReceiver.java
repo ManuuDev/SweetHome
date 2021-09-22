@@ -1,4 +1,4 @@
-package org.shdevelopment.Core;
+package org.shdevelopment.Server;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,11 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import org.shdevelopment.Constant.SysInfo;
+import org.shdevelopment.ContactManagement.ContactBookInterface;
 import org.shdevelopment.Controllers.FileReceptionController;
-import org.shdevelopment.Core.ThreadManager.threadType;
-import org.shdevelopment.Crypto.Crypto;
-import org.shdevelopment.Structures.*;
+import org.shdevelopment.Core.Tools;
+import org.shdevelopment.Structures.Contact;
+import org.shdevelopment.Structures.FileInfo;
+import org.shdevelopment.Structures.Message;
 import org.shdevelopment.SysInfo.Level;
 import org.shdevelopment.SysInfo.Log;
 
@@ -19,157 +20,23 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import static org.shdevelopment.Constant.Network.*;
-import static org.shdevelopment.Core.Contacts.*;
 import static org.shdevelopment.Core.Tools.*;
 
-public class Server extends Thread {
-
-    @Override
-    public void run() {
-
-        ServerSocket serverSocket = null;
-
-        try {
-
-            serverSocket = new ServerSocket(SERVER_PORT);
-
-            Log.addMessage("[Receptor iniciado]", Level.INFO);
-
-            synchronized (ThreadManager.threadManager) {
-                ThreadManager.threadManager.notify();
-            }
-
-            while (!Thread.currentThread().isInterrupted()) {
-
-                Socket socket = serverSocket.accept();
-
-                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                ContactData contactData = (ContactData) inputStream.readObject();
-
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeObject(SysInfo.LOCAL_CONTACT);
-
-                byte[] contactAESKey = (byte[]) inputStream.readObject();
-
-                addNewContact(new Contact(contactData, Crypto.decryptSymmetricKey(contactAESKey)));
-            }
-
-        } catch (IOException | ClassNotFoundException ex) {
-
-            Log.addMessage("Error en hilo servidor: " + ex.getMessage(), Level.ERROR);
-
-            try {
-                if (serverSocket != null) {
-                    serverSocket.close();
-                }
-            } catch (IOException ex1) {
-                Log.addMessage("No se pudo cerrar el socket servidor: " + ex1.getMessage(), Level.ERROR);
-            }
-
-            ThreadManager.reportException(threadType.SERVER);
-        }
-
-    }
-}
-
-class DeviceFinder extends Thread {
-
-    @Override
-    public void run() {
-
-        List<String> ipList = Tools.getAllPossibleIPs();
-
-        Log.addMessage("[Buscador de dispositivos iniciado]", Level.INFO);
-
-        synchronized (ThreadManager.threadManager) {
-            ThreadManager.threadManager.notify();
-        }
-
-        ExecutorService threadpool = Executors.newFixedThreadPool(5);
-
-        ipList.forEach(ip -> {
-            Runnable tryConnection = () -> Contacts.addNewContact(Client.contactHandshake(ip, 1000));
-            threadpool.submit(tryConnection);
-        });
-
-        try {
-            threadpool.shutdown();
-            threadpool.awaitTermination(60, TimeUnit.SECONDS);
-        } catch (InterruptedException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
-        }
-
-        try {
-            Thread.currentThread().join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-class MessageReceiver extends Thread {
-
-    @Override
-    public void run() {
-
-        Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-
-        try {
-
-            ServerSocket socketServer = new ServerSocket(MESSAGES_PORT);
-            Log.addMessage("[Receptor de mensajes iniciado]", Level.INFO);
-
-            synchronized (ThreadManager.threadManager) {
-                ThreadManager.threadManager.notify();
-            }
-
-            while (!Thread.currentThread().isInterrupted()) {
-
-                Socket socket = socketServer.accept();
-
-                if (isContact(socket)) {
-
-                    ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-
-                    MessagePackage packet = (MessagePackage) objectInputStream.readObject();
-
-                    if (packet.getMessage() != null) {
-
-                        Contact contact = Contacts.findContact(socket);
-
-                        String finalMessage = unpackMessage(packet, contact);
-
-                        Message newMessage = new Message(contact.getName(),contact.getIp(), packet.getDate(),finalMessage);
-
-                        addMessageWithUIThread(newMessage, contact);
-
-                    } else {
-                        Log.addMessage("Error: El paquete recibido como mensaje es erroneo o esta dañado.", Level.ERROR);
-                    }
-                }
-            }
-        } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
-        }
-    }
-
-    public String unpackMessage(MessagePackage packet, Contact contact) {
-        String message = Crypto.decryptMessage(packet.getMessage(), contact.getAes());
-
-        return SyntacticAnalyzer.executeAnalyzers(message);
-    }
-
-}
-
-class FileReceiver extends Thread {
+class FileReceiver extends ServerComponent {
 
     /* TODO Multithreading para recepción. Generar una carpeta por usuario para recibir archivos */
 
     private final File directory = createMainDirectory();
     private final String separator = System.getProperty("file.separator");
+
+    public FileReceiver(int threadID, String componentName, ContactBookInterface contactBook, ComponentManager componentManager) {
+        super(threadID, componentName, contactBook, componentManager);
+    }
 
     @Override
     @SuppressWarnings({"unchecked"})
@@ -185,18 +52,14 @@ class FileReceiver extends Thread {
             ServerSocket fileServerSocket = new ServerSocket(FILE_PORT);
             fileServerSocket.setReceiveBufferSize(FILE_BUFFER);
 
-            Log.addMessage("[Receptor de archivos iniciado]", Level.INFO);
-
-            synchronized (ThreadManager.threadManager) {
-                ThreadManager.threadManager.notify();
-            }
+            notifyToComponentManager();
 
             while (!Thread.currentThread().isInterrupted()) {
 
                 Socket socket;
                 socket = requestServerSocket.accept();
 
-                if (isContact(socket)) {
+                if (contactBook.existContact(socket)) {
 
                     InputStream inputStream = socket.getInputStream();
                     OutputStream outputStream = socket.getOutputStream();
@@ -204,7 +67,7 @@ class FileReceiver extends Thread {
                     ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                     List<FileInfo> metadataList = (List<FileInfo>) objectInputStream.readObject();
 
-                    boolean answer = generateMetadataViewer(metadataList, getContactName(socket));
+                    boolean answer = generateMetadataViewer(metadataList, contactBook.getContactName(socket));
                     //TODO!!! Finalizar metodo aca, luego en la UI si acepta crear una Task que llame a una nueva funcion usando el output stream, submit Task en threadpool
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                     objectOutputStream.writeObject(answer);
@@ -220,7 +83,7 @@ class FileReceiver extends Thread {
             }
         } catch (IOException | ClassNotFoundException ex) {
             Log.addMessage(ex.getMessage(), Level.CRITIC);
-            ThreadManager.reportException(threadType.RDA);
+            componentManager.reportException(ComponentManager.threadType.RDA);
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }
@@ -233,7 +96,7 @@ class FileReceiver extends Thread {
             public Boolean call() {
                 try {
                     FXMLLoader metadataViewLoader = new FXMLLoader();
-                    metadataViewLoader.setLocation(Server.class.getResource("/fxml/tableOfMetadata.fxml"));
+                    metadataViewLoader.setLocation(ContactServer.class.getResource("/fxml/tableOfMetadata.fxml"));
                     Parent parent = metadataViewLoader.load();
                     Stage stage = new Stage();
                     stage.setScene(new Scene(parent));
@@ -309,7 +172,7 @@ class FileReceiver extends Thread {
     }
 
     private void notifyUserInChat(Socket socket, String fileName) {
-        Contact contact = Contacts.findContact(socket);
+        Contact contact = contactBook.searchContact(socket);
         String text = ("\n" + "|| Se ha recibido: " + fileName + " ||" + "\n");
         Message message = new Message("Sistema", contact.getIp(), Tools.getSystemTime(), text);
         addMessageWithUIThread(message, contact);
