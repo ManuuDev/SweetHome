@@ -3,7 +3,7 @@ package org.shdevelopment.Server;
 import org.shdevelopment.ContactManagement.ContactBookInterface;
 import org.shdevelopment.Core.Client;
 import org.shdevelopment.Core.Tools;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.util.List;
@@ -35,7 +35,7 @@ class DeviceFinder extends ServerComponent {
             threadpool.shutdown();
             threadpool.awaitTermination(60, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
 
         try {

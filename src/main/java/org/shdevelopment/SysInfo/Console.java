@@ -3,16 +3,14 @@ package org.shdevelopment.SysInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
+import static org.shdevelopment.Core.Tools.runTaskOnUIThread;
+
 public class Console {
 
     @FXML
     private TextArea console;
 
     public void insertMessage(String message) {
-        console.appendText(message + "\n");
-    }
-
-    private void insertMessageToLogFile(String message) {
-        //TODO Logs con rotacion de archivos, mantener 7
+        runTaskOnUIThread(() -> console.appendText(message + "\n"));
     }
 }

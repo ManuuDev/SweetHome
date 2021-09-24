@@ -1,9 +1,12 @@
 package org.shdevelopment.Server;
 
 import org.shdevelopment.ContactManagement.ContactBookInterface;
-import org.shdevelopment.SysInfo.Level;
+import org.shdevelopment.Core.Tools;
+import org.shdevelopment.Structures.CustomException;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
+import java.net.BindException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -40,7 +43,6 @@ public class ComponentManager {
         fileReceiver = new FileReceiver(getNewThreadID(), "Receptor de archivos", contactBook, COMPONENT_MANAGER);
         deviceFinder = new DeviceFinder(getNewThreadID(), "Rastreador de dispositivos", contactBook, COMPONENT_MANAGER);
 
-        //TODO Testear sincronizacion | Falta manejar errores.
         Queue<Thread> threadsQueue = new LinkedList<>();
 
         threadsQueue.add(contactServer);
@@ -59,35 +61,44 @@ public class ComponentManager {
                     wait();
                 }
             } catch (InterruptedException ex) {
-                Log.addMessage(ex.getMessage(), Level.ERROR);
+                Log.addMessage(ex.getMessage(), Level.WARNING);
             }
         }
     }
 
-    public void reportException(threadType type) {
+    public void reportException(threadType type, String componentName, Exception ex) {
+
+        Log.addMessage("Error en el servicio " + componentName + ex.getMessage(), Level.WARNING);
+
+        if(ex instanceof BindException)
+            Tools.exitWithError(new CustomException.PortAlreadyInUse());
+
+        ServerComponent serverComponent = null;
+
         switch (type) {
-            //TODO Throw custom exception para c/thread e infomar por consola.
             case SERVER:
-                contactServer = new ContactServer(getNewThreadID(), "Servidor principal", contactBook, COMPONENT_MANAGER);
-                contactServer.start();
-                Log.addMessage("Servicio servidor reiniciado", Level.INFO);
+                serverComponent = new ContactServer(getNewThreadID(), componentName, contactBook, COMPONENT_MANAGER);
+                contactServer = (ContactServer) serverComponent;
                 break;
             case RDM:
-                messageReceiver = new MessageReceiver(getNewThreadID(), "Receptor de mensajes", contactBook, COMPONENT_MANAGER);
-                messageReceiver.start();
-                Log.addMessage("Servicio receptor de mensajes reiniciado", Level.INFO);
+                serverComponent = new MessageReceiver(getNewThreadID(), componentName, contactBook, COMPONENT_MANAGER);
+                messageReceiver = (MessageReceiver) serverComponent;
                 break;
             case RDA:
-                fileReceiver = new FileReceiver(getNewThreadID(), "Receptor de archivos", contactBook, COMPONENT_MANAGER);
-                fileReceiver.start();
-                Log.addMessage("Servicio receptor de archivos reiniciado", Level.INFO);
+                serverComponent = new FileReceiver(getNewThreadID(), componentName, contactBook, COMPONENT_MANAGER);
+                fileReceiver = (FileReceiver) serverComponent;
                 break;
             case BDD:
-                deviceFinder = new DeviceFinder(getNewThreadID(), "Rastreador de dispositivos", contactBook, COMPONENT_MANAGER);
-                deviceFinder.start();
-                Log.addMessage("Servicio rastreador de dispositivos reiniciado", Level.INFO);
+                serverComponent = new DeviceFinder(getNewThreadID(), componentName, contactBook, COMPONENT_MANAGER);
+                deviceFinder = (DeviceFinder) serverComponent;
                 break;
         }
+
+        if (serverComponent == null)
+            Tools.exitWithError(new UnsupportedOperationException("Error inesperado, no se reconoce el tipo de servicio"));
+
+        serverComponent.start();
+        Log.addMessage("Servicio " + componentName + "reiniciado", Level.INFO);
     }
 
     private int getNewThreadID() {

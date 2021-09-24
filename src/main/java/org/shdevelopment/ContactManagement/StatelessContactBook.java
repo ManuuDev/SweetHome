@@ -3,15 +3,15 @@ package org.shdevelopment.ContactManagement;
 import org.shdevelopment.Core.Main;
 import org.shdevelopment.Core.Tools;
 import org.shdevelopment.Structures.Contact;
-import org.shdevelopment.SysInfo.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
-import static org.shdevelopment.Core.Tools.runTaskInUIThread;
+import static org.shdevelopment.Core.Tools.runTaskOnUIThread;
 
 public class StatelessContactBook implements ContactBookInterface {
 
@@ -52,7 +52,7 @@ public class StatelessContactBook implements ContactBookInterface {
     }
 
     public synchronized void updateContactList() {
-        runTaskInUIThread(() -> Main.getMainController().updateContactList(contactList));
+        runTaskOnUIThread(() -> Main.getMainController().updateContactList(contactList));
     }
 
     public List<Contact> getCopyOfContactBook() {

@@ -14,25 +14,20 @@ import org.shdevelopment.Crypto.Crypto;
 import org.shdevelopment.Server.ComponentManager;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.SysInfo.Console;
-import org.shdevelopment.SysInfo.Level;
-import org.shdevelopment.SysInfo.Log;
 
 import java.io.IOException;
 import java.net.SocketPermission;
 import java.util.ArrayList;
 
-import static org.shdevelopment.Core.Tools.createDialog;
-
 public class Main extends Application {
 
     //General
-    //TODO Poder configurar stateless o stateful db
     //TODO Script para compilar en una plataforma
-    //TODO Manejo de errores en el ThreadManager para puertos en uso
+    //TODO Poder configurar stateless o stateful db
 
     //UI
     //TODO Mostrar scrollbar siempre en ul
-    //TODO Estructura JS p/usuario
+    //TODO Estructura p/usuario para frontend
 
     public static FXMLLoader mainLoader;
     public static Console console;
@@ -93,9 +88,7 @@ public class Main extends Application {
         try {
             SysInfo.generateInformation();
         } catch (CustomException.NoIPV4 ex) {
-            Log.addMessage(ex.getMessage(), Level.INFO);
-            createDialog(ex.getUserInfoMessage());
-            System.exit(0);
+            Tools.exitWithError(ex);
         }
     }
 

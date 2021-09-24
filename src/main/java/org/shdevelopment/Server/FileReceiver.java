@@ -13,7 +13,7 @@ import org.shdevelopment.Core.Tools;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.FileInfo;
 import org.shdevelopment.Structures.Message;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.io.*;
@@ -66,9 +66,10 @@ class FileReceiver extends ServerComponent {
 
                     ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                     List<FileInfo> metadataList = (List<FileInfo>) objectInputStream.readObject();
-
+                    //TODO Ejecutar futuretask en UI y llevar lógica de metadataViewer a una clase UI,
+                    // si acepta usar outpustream por parametro y agregar a un threadpool receiveFiles
                     boolean answer = generateMetadataViewer(metadataList, contactBook.getContactName(socket));
-                    //TODO!!! Finalizar metodo aca, luego en la UI si acepta crear una Task que llame a una nueva funcion usando el output stream, submit Task en threadpool
+
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                     objectOutputStream.writeObject(answer);
 
@@ -82,44 +83,40 @@ class FileReceiver extends ServerComponent {
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Level.CRITIC);
-            componentManager.reportException(ComponentManager.threadType.RDA);
+            Log.addMessage(ex.getMessage(), Level.SEVERE);
+            componentManager.reportException(ComponentManager.threadType.RDA, componentName, ex);
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }
     }
 
     public boolean generateMetadataViewer(List<FileInfo> metadataList, String contactName) throws ExecutionException, InterruptedException {
-        final FutureTask<Boolean> query = new FutureTask<>(new Callable<>() {
-            @Override
-            @SuppressWarnings({"unchecked"})
-            public Boolean call() {
-                try {
-                    FXMLLoader metadataViewLoader = new FXMLLoader();
-                    metadataViewLoader.setLocation(ContactServer.class.getResource("/fxml/tableOfMetadata.fxml"));
-                    Parent parent = metadataViewLoader.load();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(parent));
-                    stage.setTitle("Solicitud recibida de " + contactName);
-                    stage.show();
+        final FutureTask<Boolean> query = new FutureTask<>(() -> {
+            try {
+                FXMLLoader metadataViewLoader = new FXMLLoader();
+                metadataViewLoader.setLocation(ContactServer.class.getResource("/fxml/tableOfMetadata.fxml"));
+                Parent parent = metadataViewLoader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(parent));
+                stage.setTitle("Solicitud recibida de " + contactName);
+                stage.show();
 
-                    FileReceptionController controller = metadataViewLoader.getController();
-                    TableView tableView = controller.getTableView();
-                    ObservableList<FileInfo> observableList = FXCollections.observableList(metadataList);
-                    tableView.setItems(observableList);
+                FileReceptionController controller = metadataViewLoader.getController();
+                TableView tableView = controller.getTableView();
+                ObservableList<FileInfo> observableList = FXCollections.observableList(metadataList);
+                tableView.setItems(observableList);
 
-                    boolean answer = controller.getAnswer();
-                    stage.close();
-                    return answer;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return false;
+                boolean answer = controller.getAnswer();
+                stage.close();
+                return answer;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            return false;
         });
 
-        runTaskInUIThread(query);
+        runTaskOnUIThread(query);
         return query.get();
     }
 
@@ -167,7 +164,7 @@ class FileReceiver extends ServerComponent {
             ois.close();
             socket.close();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
     }
 
@@ -182,7 +179,7 @@ class FileReceiver extends ServerComponent {
         try {
             return (FileInfo) input.readObject();
         } catch (IOException | ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
             return null;
         }
     }

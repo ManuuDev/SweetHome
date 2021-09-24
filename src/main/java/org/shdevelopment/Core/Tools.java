@@ -8,7 +8,7 @@ import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.Structures.Message;
 import org.shdevelopment.Structures.Unit;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.io.File;
@@ -83,7 +83,7 @@ public class Tools {
         return ipList.stream().filter(x -> !x.equals(ipv4)).collect(Collectors.toList());
     }
 
-    public static void runTaskInUIThread(Runnable runnable) {
+    public static void runTaskOnUIThread(Runnable runnable) {
         Platform.runLater(runnable);
     }
 
@@ -132,7 +132,7 @@ public class Tools {
             if (!file.exists())
                 file.createNewFile();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
 
         return file;
@@ -148,5 +148,17 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static void exitWithError(CustomException ex) {
+        Log.addMessage(ex.getMessage(), Level.INFO);
+        createDialog(ex.getUserInfoMessage());
+        System.exit(0);
+    }
+
+    public static void exitWithError(Exception ex) {
+        Log.addMessage(ex.getMessage(), Level.INFO);
+        createDialog("Ocurrio un error inesperado en el sistema, verifique los logs.");
+        System.exit(0);
     }
 }

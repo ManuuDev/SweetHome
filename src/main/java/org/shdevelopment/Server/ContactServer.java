@@ -6,7 +6,7 @@ import org.shdevelopment.Crypto.Crypto;
 import org.shdevelopment.Server.ComponentManager.threadType;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.ContactData;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.io.IOException;
@@ -51,17 +51,15 @@ public class ContactServer extends ServerComponent {
 
         } catch (IOException | ClassNotFoundException ex) {
 
-            Log.addMessage("Error en hilo servidor: " + ex.getMessage(), Level.ERROR);
-
             try {
                 if (serverSocket != null) {
                     serverSocket.close();
                 }
             } catch (IOException ex1) {
-                Log.addMessage("No se pudo cerrar el socket servidor: " + ex1.getMessage(), Level.ERROR);
+                Log.addMessage("No se pudo cerrar el socket servidor: " + ex1.getMessage(), Level.WARNING);
             }
 
-            componentManager.reportException(threadType.SERVER);
+            componentManager.reportException(threadType.SERVER, componentName , ex);
         }
 
     }

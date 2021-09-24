@@ -27,4 +27,17 @@ public abstract class CustomException extends Exception {
             return "Ocurrió un error al desencriptar el mensaje.";
         }
     }
+
+    public static class PortAlreadyInUse extends CustomException {
+
+        public PortAlreadyInUse() {
+            super();
+        }
+
+        @Override
+        public String getUserInfoMessage() {
+            return "Uno de los puertos utilizados por esta app está en uso. " +
+                    "Verifique los logs para conocer el puerto en uso y cierre el programa que lo esté ocupado";
+        }
+    }
 }

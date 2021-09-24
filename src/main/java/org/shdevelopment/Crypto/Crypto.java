@@ -2,17 +2,15 @@ package org.shdevelopment.Crypto;
 
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.CustomException;
-import org.shdevelopment.SysInfo.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.logging.Level;
 
-import static org.shdevelopment.SysInfo.Level.ERROR;
 
 public class Crypto {
 
@@ -46,7 +44,7 @@ public class Crypto {
             return cipher.doFinal(encodedAES);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
 
         return null;
@@ -60,7 +58,7 @@ public class Crypto {
             return (new SecretKeySpec(encodedAES, 0, encodedAES.length, "AES"));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Log.addMessage("Error al desencriptar por RSA: " + ex.getMessage(), ERROR);
+            Log.addMessage("Error al desencriptar por RSA: " + ex.getMessage(), Level.WARNING);
         }
         return null;
     }
@@ -71,7 +69,7 @@ public class Crypto {
             keyGenerator.init(256);
             return keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
             return null;
         }
     }
@@ -102,7 +100,7 @@ public class Crypto {
         } catch (InvalidKeyException | NoSuchAlgorithmException
                 | BadPaddingException | IllegalBlockSizeException
                 | InvalidAlgorithmParameterException | NoSuchPaddingException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
         return null;
     }
@@ -129,7 +127,7 @@ public class Crypto {
 
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
             throw new CustomException.ErrorDecryptingMessage();
         }
     }

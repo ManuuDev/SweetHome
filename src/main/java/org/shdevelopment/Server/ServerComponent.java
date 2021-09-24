@@ -1,7 +1,7 @@
 package org.shdevelopment.Server;
 
 import org.shdevelopment.ContactManagement.ContactBookInterface;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 public abstract class ServerComponent extends Thread {
@@ -23,7 +23,7 @@ public abstract class ServerComponent extends Thread {
 
     public void notifyToComponentManager() {
         synchronized (componentManager) {
-            Log.addMessage(String.format("[%s iniciado]", componentName), Level.INFO);
+            Log.addMessage(String.format("%s iniciado", componentName), Level.INFO);
             componentManager.notify();
         }
     }

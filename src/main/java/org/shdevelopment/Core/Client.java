@@ -3,7 +3,7 @@ package org.shdevelopment.Core;
 import org.shdevelopment.Constant.SysInfo;
 import org.shdevelopment.Crypto.Crypto;
 import org.shdevelopment.Structures.*;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import javax.crypto.SecretKey;
@@ -47,7 +47,7 @@ public class Client {
         try {
             socket.close();
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
 
         return null;
@@ -98,7 +98,8 @@ public class Client {
 
             if (answer) {
 
-                long totalSize = Tools.totalSizeInBytes(files); //TODO Barra de progreso
+                //TODO Barra de progreso
+                long totalSize = Tools.totalSizeInBytes(files);
 
                 Socket s = new Socket(ip, FILE_PORT);
 
@@ -119,14 +120,17 @@ public class Client {
                 oos.close();
                 s.close();
 
-            } else {//TODO Informar en chat
-                Log.addMessage("El usuario rechazo la solicutid.", Level.INFO);
+            } else {
+                String text = "El usuario rechazó la solicitud de envio.";
+                Message message = new Message("Sistema", ip, Tools.getSystemTime(), text);
+                addMessageWithUIThread(message, ip);
+                Log.addMessage(text + " IP: " + ip, Level.INFO);
             }
 
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         } catch (ClassNotFoundException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
     }
 
@@ -183,7 +187,7 @@ public class Client {
         try {
             output.writeObject(fileData);
         } catch (IOException ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
     }
 }

@@ -7,7 +7,7 @@ import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.Structures.Message;
 import org.shdevelopment.Structures.MessagePackage;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import java.io.IOException;
@@ -55,12 +55,12 @@ class MessageReceiver extends ServerComponent {
                         addMessageWithUIThread(newMessage, contact);
 
                     } else {
-                        Log.addMessage("Error: El paquete recibido como mensaje es erroneo o esta dañado.", Level.ERROR);
+                        Log.addMessage("Error: El paquete recibido como mensaje es erroneo o esta dañado.", Level.WARNING);
                     }
                 }
             }
         } catch (IOException | ClassNotFoundException | CustomException.ErrorDecryptingMessage ex) {
-            Log.addMessage(ex.getMessage(), Level.ERROR);
+            Log.addMessage(ex.getMessage(), Level.WARNING);
         }
     }
 

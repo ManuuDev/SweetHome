@@ -24,7 +24,7 @@ import org.shdevelopment.Core.Client;
 import org.shdevelopment.Core.Main;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.Message;
-import org.shdevelopment.SysInfo.Level;
+import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
 import javax.json.bind.JsonbBuilder;
@@ -201,7 +201,7 @@ public class Controller {
             try {
                 Desktop.getDesktop().open(getDownloadsFolder());
             } catch (IOException ex) {
-                Log.addMessage(ex.getMessage(), Level.ERROR);
+                Log.addMessage(ex.getMessage(), Level.WARNING);
             }
         };
 
