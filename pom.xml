@@ -93,6 +93,13 @@
             <version>1.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2-mvstore -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2-mvstore</artifactId>
+            <version>2.1.210</version>
+        </dependency>
+
     </dependencies>
     <build>
         <resources>
@@ -100,6 +107,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>chat.html</include>
+                    <include>**/*.jar</include>
                     <include>**/*.fxml</include>
                     <include>**/*.js</include>
                     <include>**/*.css</include>
@@ -116,7 +124,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -126,7 +136,7 @@
                 <configuration>
                     <mainClass>org.shdevelopment/org.shdevelopment.Core.Main</mainClass>
                     <jlinkImageName>SweetHome</jlinkImageName>
-                    <jlinkZipName>SweetHomeZip</jlinkZipName>
+                    <!-- <jlinkZipName>SweetHomeZip</jlinkZipName> -->
                     <launcher>SweetHome</launcher>
                     <compress>1</compress>
                     <noHeaderFiles>true</noHeaderFiles>

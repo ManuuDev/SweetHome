@@ -19,11 +19,15 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.shdevelopment.ContactManagement.StatefulContactBook;
 import org.shdevelopment.ContactManagement.StatelessContactBook;
 import org.shdevelopment.Core.Client;
 import org.shdevelopment.Core.Main;
+import org.shdevelopment.Database.Driver;
 import org.shdevelopment.Structures.Contact;
 import org.shdevelopment.Structures.Message;
+
+import java.sql.SQLException;
 import java.util.logging.Level;
 import org.shdevelopment.SysInfo.Log;
 
@@ -119,10 +123,13 @@ public class Controller {
     private void finishConfig() {
         Contact contactTest01 = new Contact("0.0.0.0", "Contacto de prueba 1", null);
         contactTest01.addMessageToHistory(new Message("", "", "00:00:00", "Mensaje contacto 1"));
-        Contact contactTest02 = new Contact("0.0.0.1", "Contacto de prueba 2", null);
-        contactTest02.addMessageToHistory(new Message("", "", "00:00:00", "Mensaje contacto 2"));
-        CONTACT_LIST.add(contactTest01);
-        CONTACT_LIST.add(contactTest02);
+        //Contact contactTest02 = new Contact("0.0.0.1", "Contacto de prueba 2", null);
+        //contactTest02.addMessageToHistory(new Message("", "", "00:00:00", "Mensaje contacto 2"));
+        //CONTACT_LIST.add(contactTest01);
+        //CONTACT_LIST.add(contactTest02);
+        StatefulContactBook.getInstance().addContact(contactTest01);
+        Contact tmp = StatefulContactBook.getInstance().searchContact(contactTest01.getIp());
+        System.out.println(tmp);
     }
 
     public void setConsoleRoot(Parent root) {
@@ -215,6 +222,11 @@ public class Controller {
 
     //TODO Si hay recepción de archivos entrantes generar mensaje con avisando que si se cierra el programa se interrumpira la transferencia
     public void exitProgram() {
+        try {
+            Driver.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         System.exit(0);
     }
 

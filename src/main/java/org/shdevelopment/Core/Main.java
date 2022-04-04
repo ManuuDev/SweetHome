@@ -8,15 +8,21 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.shdevelopment.Constant.Network;
 import org.shdevelopment.Constant.SysInfo;
+import org.shdevelopment.ContactManagement.StatefulContactBook;
 import org.shdevelopment.ContactManagement.StatelessContactBook;
 import org.shdevelopment.Controllers.Controller;
 import org.shdevelopment.Crypto.Crypto;
+import org.shdevelopment.Database.Driver;
 import org.shdevelopment.Server.ComponentManager;
 import org.shdevelopment.Structures.CustomException;
 import org.shdevelopment.SysInfo.Console;
 
 import java.io.IOException;
 import java.net.SocketPermission;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -43,6 +49,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         mainStage = stage;
 
+        startDatabase();
         createMainInterface();
         createConsoleInterface();
         setAppIcon(stage);
@@ -50,8 +57,32 @@ public class Main extends Application {
         setInitialConfig();
         finishViewConfig(stage);
 
-        ComponentManager componentManager = new ComponentManager(StatelessContactBook.getInstance());
+        ComponentManager componentManager = new ComponentManager(StatefulContactBook.getInstance());
         componentManager.initThreads();
+    }
+
+    private void startDatabase() {
+        try {
+            Connection connection = Driver.getConnection();
+            Statement statement = connection.createStatement();
+
+            final String tables = """
+                    CREATE TABLE IF NOT EXISTS bookmark
+                    (ip varchar(30) PRIMARY KEY, name varchar(30));
+                    
+                    CREATE TABLE IF NOT EXISTS messages
+                    (msg_id int PRIMARY KEY AUTO_INCREMENT, 
+                     senderName varchar(30),
+                     date varchar(30),
+                     msg_text text,
+                     is_local bit,
+                     sender_ip varchar(30));
+                    """;
+
+            statement.execute(tables);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Controller getMainController() {

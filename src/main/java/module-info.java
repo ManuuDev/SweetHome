@@ -7,6 +7,9 @@ module org.shdevelopment {
     requires java.sql;
     requires org.eclipse.yasson;
     requires org.glassfish.java.json;
+    requires java.naming;
+    requires java.management;
+    requires com.h2database.mvstore;
 
     opens org.shdevelopment.Core to javafx.fxml;
     opens org.shdevelopment.Controllers to javafx.fxml;
