@@ -127,8 +127,13 @@ public class Controller {
         //contactTest02.addMessageToHistory(new Message("", "", "00:00:00", "Mensaje contacto 2"));
         //CONTACT_LIST.add(contactTest01);
         //CONTACT_LIST.add(contactTest02);
+
+        //Solo para probar temporalmente, después usar interfaz
+        //Los contactos almacenarlos directamente en memoria, lo unico que hay que guardar
+        // es una referencia a la IP para cargar conversaciones
         StatefulContactBook.getInstance().addContact(contactTest01);
         Contact tmp = StatefulContactBook.getInstance().searchContact(contactTest01.getIp());
+        List<Contact> list = StatefulContactBook.getInstance().getCopyOfContactBook();
         System.out.println(tmp);
     }
 

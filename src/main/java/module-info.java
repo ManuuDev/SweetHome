@@ -6,9 +6,10 @@ module org.shdevelopment {
     requires java.json.bind;
     requires java.sql;
     requires org.eclipse.yasson;
-    requires org.glassfish.java.json;
+    //requires org.glassfish.java.json;
     requires java.naming;
     requires java.management;
+    requires commons.dbutils;
 
     opens org.shdevelopment.Core to javafx.fxml;
     opens org.shdevelopment.Controllers to javafx.fxml;

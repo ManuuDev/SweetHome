@@ -12,6 +12,10 @@ public class Contact extends ContactData {
 
     final transient private List<Message> chatHistory = new ArrayList<>();
 
+    public Contact(){
+        super();
+    }
+
     public Contact(String ip, String name, PublicKey publicKey) {
         super(ip, name, publicKey);
     }

@@ -14,6 +14,8 @@ public class ContactData implements Serializable {
         this.publicKey = publicKey;
     }
 
+    public ContactData() {}
+
     public String getIp() {
         return ip;
     }
