@@ -96,7 +96,7 @@ public class Tools {
     }
 
     public static long totalSizeInBytes(List<File> files) {
-        return files.stream().mapToLong(File::length).sum();
+        return files.stream().mapToLong(x->x.length()).sum();
     }
 
     public static double fileSize(File file, Unit unit) {
