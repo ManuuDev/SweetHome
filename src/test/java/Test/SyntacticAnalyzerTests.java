@@ -1,13 +1,14 @@
 package Test;
 
 import javafx.util.Pair;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.shdevelopment.Core.SyntacticAnalyzer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SyntacticAnalyzerTests {
 
@@ -48,7 +49,7 @@ public class SyntacticAnalyzerTests {
     public void wellFormedTest1(){
         String domainName = "google.com.ar";
         List<Pair<String, String>> list = getTuples(domainName);
-        list.forEach(x -> Assert.assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
+        list.forEach(x -> assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
     }
 
 
@@ -56,38 +57,38 @@ public class SyntacticAnalyzerTests {
     public void wellFormedTest2(){
         String domainName = "google.com";
         List<Pair<String, String>> list = getTuples(domainName);
-        list.forEach(x -> Assert.assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
+        list.forEach(x -> assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
     }
 
     @Test
     public void wellFormedTest3(){
         String domainName = "google.net";
         List<Pair<String, String>> list = getTuples(domainName);
-        list.forEach(x -> Assert.assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
+        list.forEach(x -> assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
     }
 
     @Test
     public void wellFormedTest4(){
         String domainName = "othername.large.dom.ar";
         List<Pair<String, String>> list = getTuples(domainName);
-        list.forEach(x -> Assert.assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
+        list.forEach(x -> assertEquals(x.getValue(), SyntacticAnalyzer.executeAnalyzers(x.getKey())));
     }
 
     @Test
     public void badURLTest1(){
         String someText = "configuraron.Sigue";
-        Assert.assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
+        assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
     }
 
     @Test
     public void badURLTest2(){
         String someText = "www.something";
-        Assert.assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
+        assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
     }
 
     @Test
     public void badURLTest3(){
         String someText = "three.words.line";
-        Assert.assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
+        assertEquals(someText, SyntacticAnalyzer.executeAnalyzers(someText));
     }
 }
